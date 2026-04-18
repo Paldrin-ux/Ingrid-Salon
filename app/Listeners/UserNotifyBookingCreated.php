@@ -42,7 +42,7 @@ class UserNotifyBookingCreated
                     <p style='font-size: 15px; color: #333;'>Thank you for choosing <strong>Ingrid Salon</strong>. We look forward to pampering you soon!</p>
 
                     <div style='text-align: center; margin-top: 30px;'>
-                        <a href='#' style='background: #e83e8c; color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;'>View Booking</a>
+                        <a href='#' style='background: #e83e8c; color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;'>Thank You!</a>
                     </div>
 
                     <hr style='margin: 30px 0; border: none; border-top: 1px solid #ddd;'>

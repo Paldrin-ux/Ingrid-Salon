@@ -27,15 +27,18 @@ class AppServiceProvider extends ServiceProvider
      * Bootstrap any application services.
      */
     public function boot(): void
-    {
-        // Force HTTPS in production (required for Railway)
-        if ($this->app->environment('production')) {
-            URL::forceScheme('https');
-        }
-
-        Gate::before(function ($user, $ability) {
-            return $user->id == 1 ? true : null;
-        });
+{
+    if ($this->app->environment('production')) {
+        URL::forceScheme('https');
     }
-    
+
+    Gate::before(function ($user, $ability) {
+    // user ID 1 OR any user with the admin role
+    return ($user->id == 1 || $user->hasRole('admin')) ? true : null;
+});
+    // Add this gate for sidebar visibility
+    Gate::define('is-admin', function ($user) {
+        return $user->hasRole('admin');
+    });
+}
 }

@@ -345,12 +345,14 @@
                 @csrf
                 
                 <!-- Full Name -->
-                <div class="form-group">
-                    <input type="text" name="name" class="form-input" placeholder="Full Name" 
-                           value="{{ old('name') }}" required>
-                    <i class="fas fa-user input-icon"></i>
-                </div>
-
+<div class="form-group">
+    <input type="text" name="name" class="form-input" placeholder="Full Name" 
+           value="{{ old('name') }}" required
+           onkeydown="return /[a-zA-Z\s]/.test(event.key) || ['Backspace','Delete','ArrowLeft','ArrowRight','Tab'].includes(event.key)"
+           onpaste="let p=event.clipboardData.getData('text');if(/\d/.test(p))event.preventDefault()"
+           oninput="this.value=this.value.replace(/[0-9]/g,'')">
+    <i class="fas fa-user input-icon"></i>
+</div>
                 <!-- Email with Verify Button -->
                 <div class="form-group">
                     <div class="email-input-wrapper">

@@ -11,11 +11,11 @@ class IsAdmin
      * Handle an incoming request.
      */
     public function handle($request, Closure $next)
-    {
-        if (Auth::check() && Auth::user()->role === 'admin') {
-            return $next($request);
-        }
-
-        return redirect('/')->with('error', 'You do not have admin access.');
+{
+    if (Auth::check() && Auth::user()->hasRole('admin')) {
+        return $next($request);
     }
+
+    return redirect('/')->with('error', 'You do not have admin access.');
+}
 }

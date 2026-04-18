@@ -357,7 +357,7 @@ return [
     'text' => 'Commissions',
     'route' => 'admin.commissions.index',
     'icon' => 'fas fa-fw fa-money-bill',
-    'can'  => 'admin',
+    'can'  => 'is-admin',
     ],
 
 

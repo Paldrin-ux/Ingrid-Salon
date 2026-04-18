@@ -454,24 +454,11 @@
                                 <label class="text-muted small mb-1"><i class="fas fa-sticky-note mr-2"></i>Notes</label>
                                 <p class="font-weight-bold" id="Notes">N/A</p>
                             </div>
-                            <div class="col-12">
-                                <label class="custom-label"><i class="fas fa-tasks"></i>Update Status</label>
-                                <select name="status" class="form-control" id="modalStatusSelect">
-                                    <option value="Pending payment">Pending payment</option>
-                                    <option value="Processing">Processing</option>
-                                    <option value="Confirmed">Confirmed</option>
-                                    <option value="Cancelled">Cancelled</option>
-                                    <option value="Completed">Completed</option>
-                                    <option value="On Hold">On Hold</option>
-                                    <option value="No Show">No Show</option>
-                                </select>
-                            </div>
+                            
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" onclick="return confirm('Are you sure you want to update booking status?')" class="btn btn-gradient">
-                            <i class="fas fa-check mr-1"></i>Update Status
-                        </button>
+                        
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">
                             <i class="fas fa-times mr-1"></i>Close
                         </button>
@@ -1019,13 +1006,7 @@
                                                             <button class="btn btn-primary action-btn view-appointment-btn-employee" data-toggle="modal" data-target="#appointmentModal" data-id="{{ $appointment->id }}" data-name="{{ $appointment->name }}" data-service="{{ $appointment->service?->title ?? 'No Service' }}" data-email="{{ $appointment->email }}" data-phone="{{ $appointment->phone }}" data-employee="{{ $appointment->employee->user->name ?? 'No Staff' }}" data-start="{{ $appointment->booking_date . ' ' . $appointment->booking_time }}" data-amount="{{ $appointment->amount }}" data-notes="{{ $appointment->notes }}" data-status="{{ $appointment->status }}">
                                                                 <i class="fas fa-eye mr-1"></i>View
                                                             </button>
-                                                            <form action="{{ route('appointments.destroy', $appointment->id) }}" method="POST" style="display:inline;">
-                                                                @csrf
-                                                                @method('DELETE')
-                                                                <button type="submit" class="btn btn-danger action-btn" onclick="return confirm('Are you sure you want to delete this appointment?')">
-                                                                    <i class="fas fa-trash mr-1"></i>Delete
-                                                                </button>
-                                                            </form>
+                                                            
                                                         </td>
                                                     </tr>
                                                 @endforeach

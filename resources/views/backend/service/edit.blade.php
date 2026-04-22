@@ -340,7 +340,7 @@
                                 <div class="col-md-6">
                                     <div class="custom-form-group">
                                         <label class="custom-label mb-0">
-                                            <i class="fas fa-percentage"></i>Sale Price
+                                            <i class="fas fa-money-bill-wave"></i>Sale Price
                                         </label>
                                         <input class="form-control" type="number" name="sale_price" placeholder="0.00"
                                             value="{{ old('sale_price', $service->sale_price) }}">

@@ -1193,190 +1193,128 @@
             }
 
             function updateServicesStep(categoryId) {
-    // Show loading state
-    $("#services-container").html(
-        '<div class="text-center py-5"><div class="spinner-border text-primary" role="status"></div></div>'
-    );
-
-    // Make AJAX request to get services for this category
-    $.ajax({
-        url: `/categories/${categoryId}/services`,
-        type: 'GET',
-        dataType: 'json',
-        success: function(response) {
-            if (response.success && response.services) {
-                const services = response.services;
-
-                // Update category name display
-                const selectedCategory = categories.find(cat => cat.id == categoryId);
-                $(".selected-category-name").text(
-                    `Selected Category: ${selectedCategory?.title || ''}`);
-
-                // Clear services container
-                $("#services-container").empty();
-
-                // Add services with animation delay
-                services.forEach((service, index) => {
-                    // FIXED: Calculate discounted price if sale_price exists (treating it as percentage)
-                    let priceDisplay;
-                    const originalPrice = parseFloat(service.price);
-                    
-                    if (service.sale_price && parseFloat(service.sale_price) > 0) {
-                        const discountPercentage = parseFloat(service.sale_price);
-                        const discountAmount = (originalPrice * discountPercentage) / 100;
-                        const finalPrice = originalPrice - discountAmount;
-                        
-                        priceDisplay = `
-                            <span class="text-decoration-line-through text-muted">₱${originalPrice.toFixed(2)}</span> 
-                            <span class="fw-bold sale-price text-success">₱${finalPrice.toFixed(2)}</span>
-                            <div class="small text-danger" style="font-size: 0.75rem;">${discountPercentage}% OFF</div>
-                        `;
-                    } else {
-                        priceDisplay = `<span class="fw-bold price-display">₱${originalPrice.toFixed(2)}</span>`;
-                    }
-
-                    const serviceCard = `
-                        <div class="col animate-slide-in" style="animation-delay: ${index * 100}ms">
-                            <div class="card border h-100 service-card text-center p-2" data-service="${service.id}">
-                                <div class="card-body">
-                                    ${service.image ? `<img class="img-fluid rounded mb-2" src="/uploads/images/service/${service.image}">` : ""}
-                                    <h5 class="card-title mb-1">${service.title}</h5>
-                                    <p class="card-text mb-1">${service.excerpt || ''}</p>
-                                    <p class="card-text">${priceDisplay}</p>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-
-                    $("#services-container").append(serviceCard);
-                });
-            } else {
+                // Show loading state
                 $("#services-container").html(
-                    '<div class="col-12 text-center py-5"><p>No services available for this category.</p></div>'
-                );
-            }
-        },
-        error: function(xhr) {
-            console.error(xhr);
-            $("#services-container").html(
-                '<div class="col-12 text-center py-5"><p>Error loading services. Please try again.</p></div>'
-            );
-        }
-    });
-}
-
-function updateEmployeesStep(serviceId) {
-    // Show loading state
-    $("#employees-container").html(
-        '<div class="text-center py-5"><div class="spinner-border text-primary" role="status"></div></div>'
-    );
-
-    // Make AJAX request to get employees for this service
-    $.ajax({
-        url: `/services/${serviceId}/employees`,
-        type: 'GET',
-        dataType: 'json',
-        success: function(response) {
-            if (response.success && response.employees) {
-                const employees = response.employees;
-                const service = response.service;
-
-                // Update service name display
-                // FIXED: Show the correctly formatted price in the header
-                const displayPrice = bookingState.selectedService.price_formatted || `₱${parseFloat(bookingState.selectedService.price).toFixed(2)}`;
-                $(".selected-service-name").html(
-                    `Selected Service: ${service.title} (${displayPrice})`
+                    '<div class="text-center py-5"><div class="spinner-border text-primary" role="status"></div></div>'
                 );
 
-                // Clear employees container
-                $("#employees-container").empty();
+                // Make AJAX request to get services for this category
+                $.ajax({
+                    url: `/categories/${categoryId}/services`,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.success && response.services) {
+                            const services = response.services;
 
-                // Add employees with animation delay
-                employees.forEach((employee, index) => {
-                    const employeeCard = `
-                    <div class="col animate-slide-in" style="animation-delay: ${index * 100}ms">
-                        <div class="card border h-100 employee-card text-center p-2" data-employee="${employee.id}">
-                            <div class="card-body">
-                                <div class="rounded-circle bg-light d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 80px; height: 80px;">
-                                    ${employee.user.image ?
-                                        `<img src="/uploads/images/profile/${employee.user.image}" class="rounded-circle" style="width: 80px; height: 80px; object-fit: cover;">` :
-                                        `<i class="fas fa-user text-primary" style="font-size: 2rem;"></i>`
-                                    }
-                                </div>
-                                <h5 class="card-title">${employee.user.name}</h5>
-                                <p class="card-text text-muted">${employee.position || 'Professional'}</p>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                    $("#employees-container").append(employeeCard);
+                            // Update category name display
+                            const selectedCategory = categories.find(cat => cat.id == categoryId);
+                            $(".selected-category-name").text(
+                                `Selected Category: ${selectedCategory?.title || ''}`);
+
+                            // Clear services container
+                            $("#services-container").empty();
+
+                            // Add services with animation delay
+                            services.forEach((service, index) => {
+                                // Determine the price display
+                                let priceDisplay;
+                                if (service.sale_price) {
+                                    priceDisplay =
+                                        `<span class="text-decoration-line-through text-muted">₱${service.price}</span> <span class="fw-bold sale-price">₱${service.sale_price}</span>`;
+                                } else {
+                                    priceDisplay =
+                                        `<span class="fw-bold price-display">₱${service.price}</span>`;
+                                }
+
+                                const serviceCard = `
+                                    <div class="col animate-slide-in" style="animation-delay: ${index * 100}ms">
+                                        <div class="card border h-100 service-card text-center p-2" data-service="${service.id}">
+                                            <div class="card-body">
+                                                ${service.image ? `<img class="img-fluid rounded mb-2" src="/uploads/images/service/${service.image}">` : ""}
+                                                <h5 class="card-title mb-1">${service.title}</h5>
+                                                <p class="card-text mb-1">${service.excerpt}</p>
+                                                <p class="card-text">${priceDisplay}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                `;
+
+                                $("#services-container").append(serviceCard);
+                            });
+                        } else {
+                            $("#services-container").html(
+                                '<div class="col-12 text-center py-5"><p>No services available for this category.</p></div>'
+                            );
+                        }
+                    },
+                    error: function(xhr) {
+                        console.error(xhr);
+                        $("#services-container").html(
+                            '<div class="col-12 text-center py-5"><p>Error loading services. Please try again.</p></div>'
+                        );
+                    }
                 });
-            } else {
-                $("#employees-container").html(
-                    '<div class="col-12 text-center py-5"><p>No employees available for this service.</p></div>'
-                );
             }
-        },
-        error: function(xhr) {
-            console.error(xhr);
-            $("#employees-container").html(
-                '<div class="col-12 text-center py-5"><p>Error loading employees. Please try again.</p></div>'
-            );
-        }
-    });
-}
 
-// ALSO REPLACE YOUR .service-card CLICK HANDLER WITH THIS:
-$(document).on("click", ".service-card", function() {
-    $(".service-card").removeClass("selected");
-    $(this).addClass("selected");
+            function updateEmployeesStep(serviceId) {
+                // Show loading state
+                $("#employees-container").html(
+                    '<div class="text-center py-5"><div class="spinner-border text-primary" role="status"></div></div>'
+                );
 
-    const serviceId = $(this).data("service");
-    const serviceTitle = $(this).find('.card-title').text();
-    
-    // FIXED: Correctly extract the calculated final price
-    let finalPrice = 0;
-    let priceFormatted = "";
-    
-    if ($(this).find('.sale-price').length > 0) {
-        // Has discount
-        priceFormatted = $(this).find('.sale-price').text();
-        finalPrice = parseFloat(priceFormatted.replace('₱', ''));
-    } else {
-        // Regular price
-        priceFormatted = $(this).find('.price-display').text();
-        finalPrice = parseFloat(priceFormatted.replace('₱', ''));
-    }
+                // Make AJAX request to get employees for this service
+                $.ajax({
+                    url: `/services/${serviceId}/employees`,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.success && response.employees) {
+                            const employees = response.employees;
+                            const service = response.service;
 
-    // Store the selected service in booking state
-    bookingState.selectedService = {
-        id: serviceId,
-        title: serviceTitle,
-        price: finalPrice, // Numeric value for calculation/database
-        price_formatted: priceFormatted, // Formatted string for display
-        duration: $(this).find('.card-text:contains("Duration:")').length > 0 ? 
-                  $(this).find('.card-text:contains("Duration:")').text().replace('Duration: ', '') : "30"
-    };
+                            // Update service name display
+                            $(".selected-service-name").html(
+                                `Selected Service: ${service.title} (${bookingState.selectedService.price})`
+                            );
 
-    // Reset subsequent selections
-    bookingState.selectedEmployee = null;
-    bookingState.selectedDate = null;
-    bookingState.selectedTime = null;
+                            // Clear employees container
+                            $("#employees-container").empty();
 
-    // Clear previous selections UI
-    $(".employee-card").removeClass("selected");
-    $("#selected-date").text("");
-    $("#selected-time").text("");
-    $("#employees-container").empty();
-
-    // Show loading state for employees
-    $("#employees-container").html(
-        '<div class="col-12 text-center py-5"><div class="spinner-border text-primary" role="status"></div></div>'
-    );
-
-    // Update the employee step with employees for this service
-    updateEmployeesStep(serviceId);
-});
+                            // Add employees with animation delay
+                            employees.forEach((employee, index) => {
+                                const employeeCard = `
+                                <div class="col animate-slide-in" style="animation-delay: ${index * 100}ms">
+                                    <div class="card border h-100 employee-card text-center p-2" data-employee="${employee.id}">
+                                        <div class="card-body">
+                                            <div class="rounded-circle bg-light d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 80px; height: 80px;">
+                                                ${employee.user.image ?
+                                                    `<img src="/uploads/images/profile/${employee.user.image}" class="rounded-circle" style="width: 80px; height: 80px; object-fit: cover;">` :
+                                                    `<i class="fas fa-user text-primary" style="font-size: 2rem;"></i>`
+                                                }
+                                            </div>
+                                            <h5 class="card-title">${employee.user.name}</h5>
+                                            <p class="card-text text-muted">${employee.position || 'Professional'}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                                $("#employees-container").append(employeeCard);
+                            });
+                        } else {
+                            $("#employees-container").html(
+                                '<div class="col-12 text-center py-5"><p>No employees available for this service.</p></div>'
+                            );
+                        }
+                    },
+                    error: function(xhr) {
+                        console.error(xhr);
+                        $("#employees-container").html(
+                            '<div class="col-12 text-center py-5"><p>Error loading employees. Please try again.</p></div>'
+                        );
+                    }
+                });
+            }
 
             function generateCalendar() {
                 const today = new Date();

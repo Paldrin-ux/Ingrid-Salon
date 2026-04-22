@@ -345,7 +345,7 @@
                 <div class="col-md-6">
                     <div class="custom-form-group">
                         <label class="custom-label mb-0">
-                            <i class="fa-peseta-sign"></i>Sale Discount 
+                            <i class="fas fa-money-bill-wave"></i>Sale Discount 
                         </label>
                         <div class="input-group">
                             <input class="form-control" type="number" step="1" min="0" max="100" name="sale_price" placeholder="0"

@@ -312,58 +312,48 @@
                 </div>
 
                 <!-- Pricing Card -->
-<div class="card profile-card mb-4">
-    <div class="card-header-custom">
-        <h3><i class="fas fa-tag mr-2"></i>Pricing Information</h3>
-    </div>
-    <div class="card-body p-4">
-        <div class="section-header">
-            <h4><i class="fas fa-money-bill mr-2"></i>Price Configuration</h4>
-            <small>Set your service pricing</small>
-        </div>
+                <div class="card profile-card mb-4">
+                    <div class="card-header-custom">
+                        <h3><i class="fas fa-tag mr-2"></i>Pricing Information</h3>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="section-header">
+                            <h4><i class="fas fa-money-bill mr-2"></i>Price Configuration</h4>
+                            <small>Set your service pricing</small>
+                        </div>
 
-        <div class="price-input-group">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="custom-form-group">
-                        <label class="custom-label mb-0">
-                            <i class="fas fa-money-bill-wave"></i>Regular Price
-                        </label>
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">(₱)</span>
-                            </div>
-                            <input class="form-control" type="number" step="0.01" name="price" placeholder="0.00"
-                                value="{{ old('price', $service->price) }}">
-                        </div>
-                        <div class="help-text">Main price for the service</div>
-                        @error('price')
-                            <span class="text-danger small mt-1 d-block"><i class="fas fa-exclamation-circle mr-1"></i>{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="custom-form-group">
-                        <label class="custom-label mb-0">
-                            <i class="fas fa-money-bill-wave"></i>Sale Discount 
-                        </label>
-                        <div class="input-group">
-                            <input class="form-control" type="number" step="1" min="0" max="100" name="sale_price" placeholder="0"
-                                value="{{ old('sale_price', $service->sale_price) }}">
-                            <div class="input-group-append">
-                                <span class="input-group-text">(₱)</span>
+                        <div class="price-input-group">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="custom-form-group">
+                                        <label class="custom-label mb-0">
+                                            <i class="fas fa-money-bill-wave"></i>Regular Price
+                                        </label>
+                                        <input class="form-control" type="number" name="price" placeholder="0.00"
+                                            value="{{ old('price', $service->price) }}">
+                                        <div class="help-text">Main price for the service</div>
+                                        @error('price')
+                                            <span class="text-danger small mt-1 d-block"><i class="fas fa-exclamation-circle mr-1"></i>{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="custom-form-group">
+                                        <label class="custom-label mb-0">
+                                            <i class="fas fa-percentage"></i>Sale Price
+                                        </label>
+                                        <input class="form-control" type="number" name="sale_price" placeholder="0.00"
+                                            value="{{ old('sale_price', $service->sale_price) }}">
+                                        <div class="help-text">Discounted price (optional)</div>
+                                        @error('sale_price')
+                                            <span class="text-danger small mt-1 d-block"><i class="fas fa-exclamation-circle mr-1"></i>{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="help-text">Price Discount</div>
-                        @error('sale_price')
-                            <span class="text-danger small mt-1 d-block"><i class="fas fa-exclamation-circle mr-1"></i>{{ $message }}</span>
-                        @enderror
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-</div>
                 <!-- Excerpt Card -->
                 <div class="card profile-card mb-4">
                     <div class="card-header-custom">

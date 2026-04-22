@@ -138,6 +138,38 @@
                                         <i class="fas fa-list-ul mr-2"></i>Appointments List
                                     </h3>
                                 </div>
+                                
+                                <!-- Filter Section -->
+                                <div class="card-body" style="padding: 20px 25px; border-bottom: 1px solid #f0f0f0; background: #f8f9fa;">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group mb-0">
+                                                <label style="font-weight: 600; color: #2c3e50; margin-bottom: 8px;">
+                                                    <i class="fas fa-search mr-2"></i>Search Appointments
+                                                </label>
+                                                <input type="text" id="appointmentSearch" class="form-control" placeholder="Search by name, email, phone..." style="border-radius: 8px; border: 2px solid #e0e0e0; padding: 10px 15px; transition: all 0.3s ease;">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group mb-0">
+                                                <label style="font-weight: 600; color: #2c3e50; margin-bottom: 8px;">
+                                                    <i class="fas fa-filter mr-2"></i>Filter by Status
+                                                </label>
+                                                <select id="statusFilter" class="form-control" style="border-radius: 8px; border: 2px solid #e0e0e0; padding: 10px 15px; transition: all 0.3s ease;">
+                                                    <option value="">All Statuses</option>
+                                                    <option value="Pending payment">Pending payment</option>
+                                                    <option value="Processing">Processing</option>
+                                                    <option value="Confirmed">Confirmed</option>
+                                                    <option value="Cancelled">Cancelled</option>
+                                                    <option value="Completed">Completed</option>
+                                                    <option value="On Hold">On Hold</option>
+                                                    <option value="No Show">No Show</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <div class="card-body" style="padding: 25px;">
                                     <div class="table-responsive">
                                         <table id="myTable" class="table table-hover" style="width: 100%;">
@@ -156,7 +188,7 @@
                                                     <th style="padding: 15px; font-weight: 600; color: #2c3e50; border: none;">Service</th>
                                                     <th style="padding: 15px; font-weight: 600; color: #2c3e50; border: none;">Date</th>
                                                     <th style="padding: 15px; font-weight: 600; color: #2c3e50; border: none;">Time</th>
-                                                    <th style="padding: 15px; font-weight: 600; color: #2c3e50; text-align: center; border: none;">Status</th>
+                                                    <th style="padding: 15px; font-weight: 600; color: #2c3e50; border: none;">Status</th>
                                                     <th style="padding: 15px; font-weight: 600; color: #2c3e50; border: none;">Action</th>
                                                 </tr>
                                             </thead>
@@ -174,7 +206,7 @@
                                                     ];
                                                 @endphp
                                                 @foreach ($appointments as $appointment)
-                                                    <tr style="border-bottom: 1px solid #f0f0f0; transition: all 0.3s ease;">
+                                                    <tr style="border-bottom: 1px solid #f0f0f0; transition: all 0.3s ease;" data-status="{{ $appointment->status }}">
                                                         <td style="padding: 15px; vertical-align: middle;">
                                                             <div class="custom-control custom-checkbox">
                                                                 <input type="checkbox" name="ids[]" value="{{ $appointment->id }}" class="custom-control-input appointment-checkbox" id="check-{{ $appointment->id }}">
@@ -270,6 +302,9 @@
         .modal.show .modal-dialog { transform: scale(1); }
         .table-responsive::-webkit-scrollbar { height: 8px; }
         .table-responsive::-webkit-scrollbar-thumb { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 10px; }
+        
+        /* Filter input focus styles */
+        #appointmentSearch:focus, #statusFilter:focus { border-color: #667eea !important; box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1) !important; }
     </style>
 @stop
 
@@ -281,6 +316,22 @@
                 pageLength: 10,
                 columnDefs: [{ orderable: false, targets: 0 }],
                 language: { search: "_INPUT_", searchPlaceholder: "Search appointments..." }
+            });
+
+            // Custom search and status filter
+            $('#appointmentSearch').on('keyup', function() {
+                table.search(this.value).draw();
+            });
+
+            $('#statusFilter').on('change', function() {
+                var statusValue = this.value;
+                if (statusValue === '') {
+                    // Show all rows
+                    table.column(8).search('').draw();
+                } else {
+                    // Filter by selected status
+                    table.column(8).search(statusValue, false, false).draw();
+                }
             });
 
             // Select All logic

@@ -331,7 +331,7 @@
                         </label>
                         <div class="input-group">
                             <div class="input-group-prepend">
-                                <span class="input-group-text">$</span>
+                                <span class="input-group-text">(₱)</span>
                             </div>
                             <input class="form-control" type="number" step="0.01" name="price" placeholder="0.00"
                                 value="{{ old('price', $service->price) }}">
@@ -351,7 +351,7 @@
                             <input class="form-control" type="number" step="1" min="0" max="100" name="sale_price" placeholder="0"
                                 value="{{ old('sale_price', $service->sale_price) }}">
                             <div class="input-group-append">
-                                <span class="input-group-text">%</span>
+                                <span class="input-group-text">(₱)</span>
                             </div>
                         </div>
                         <div class="help-text">Price Discount</div>

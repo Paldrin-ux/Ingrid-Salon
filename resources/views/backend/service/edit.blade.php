@@ -345,7 +345,7 @@
                 <div class="col-md-6">
                     <div class="custom-form-group">
                         <label class="custom-label mb-0">
-                            <i class="fas fa-percentage"></i>Sale Discount (%)
+                            <i class="fas fa-percentage"></i>Sale Discount 
                         </label>
                         <div class="input-group">
                             <input class="form-control" type="number" step="1" min="0" max="100" name="sale_price" placeholder="0"
@@ -354,7 +354,7 @@
                                 <span class="input-group-text">%</span>
                             </div>
                         </div>
-                        <div class="help-text">Percentage discount (e.g., 5 for 5%)</div>
+                        <div class="help-text">Price Discount</div>
                         @error('sale_price')
                             <span class="text-danger small mt-1 d-block"><i class="fas fa-exclamation-circle mr-1"></i>{{ $message }}</span>
                         @enderror
